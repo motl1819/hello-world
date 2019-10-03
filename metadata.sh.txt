@@ -1,0 +1,9 @@
+#!/bin/bash# assign variablesACTION=${1}VERSION=0.5.0
+function create_file() {touch backend1-identity.json
+$ curl http://169.254.169.254/latest/dynamic/instance-identity/document/ 2>&1 | tee backend1-identity.json 
+
+touch backend1-message.txt
+$ curl -vs https://s3.amazonaws.com/seis665/message.json 2>&1 | tee backend1-message.txt
+
+cp /var/log/nginx/access.log access.log
+}function display_version() {echo $VERSION}function display_help() {cat << EOFUsage: ${0} {-c|--create|-d|--delete|-h|--help|-v|--version} <filename>OPTIONS:	-c | --create   Create a new file	-h | --help	 Displays command help	-v | --version	 Displays the versionExamples:	Create a new files:		$ ${0} -c	Display help:		$ ${0} -h	Display version:		$ ${0} -vEOF}case "$ACTION" in	-h|--help)		display_help		;;	-v|--version)		display_version		;;	-c|--create)		create_file "${2:-server}"		;;	*)	echo "Usage ${0} {-c|-h|-v}"	exit 1esac
